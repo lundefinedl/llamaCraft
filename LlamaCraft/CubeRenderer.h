@@ -41,4 +41,13 @@ private:
 
 	uint32 m_indexCount;
 	ModelViewProjectionConstantBuffer m_constantBufferData;
+
+	DirectX::XMFLOAT3 position;
+
+	float xRot;
+	float yRot;
+	
+
+
+
 };

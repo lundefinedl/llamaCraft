@@ -16,6 +16,7 @@ LlamaCraft::LlamaCraft() :
 	m_windowClosed(false),
 	m_windowVisible(true)
 {
+	m_controller.Initialize();
 }
 
 void LlamaCraft::Initialize(CoreApplicationView^ applicationView)
@@ -51,11 +52,26 @@ void LlamaCraft::SetWindow(CoreWindow^ window)
 	window->PointerMoved +=
 		ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &LlamaCraft::OnPointerMoved);
 
+    window->PointerReleased += 
+    ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &LlamaCraft::OnPointerReleased);
+
+  //  window->CharacterReceived +=
+  //  ref new TypedEventHandler<CoreWindow^, CharacterReceivedEventArgs^>(this, &LlamaCraft::OnCharacterReceived);
+
+    window->KeyDown += 
+    ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &LlamaCraft::OnKeyDown);
+
+    window->KeyUp += 
+    ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &LlamaCraft::OnKeyUp);
+
 	m_renderer->Initialize(CoreWindow::GetForCurrentThread());
 }
 
 void LlamaCraft::Load(Platform::String^ entryPoint)
 {
+	
+
+
 }
 
 void LlamaCraft::Run()
@@ -98,28 +114,69 @@ void LlamaCraft::OnWindowClosed(CoreWindow^ sender, CoreWindowEventArgs^ args)
 	m_windowClosed = true;
 }
 
-void LlamaCraft::OnPointerPressed(CoreWindow^ sender, PointerEventArgs^ args)
+
+void LlamaCraft::OnPointerPressed(
+ CoreWindow^ sender,
+ PointerEventArgs^ args)
 {
-	// Insert your code here.
-	   // Handle Mouse Input via dedicated relative movement handler. 
- 
+    // get the current pointer position
+    uint32 pointerID = args->CurrentPoint->PointerId;
+    DirectX::XMFLOAT2 position = DirectX::XMFLOAT2( args->CurrentPoint->Position.X, args->CurrentPoint->Position.Y );
+	auto device = args->CurrentPoint->PointerDevice;
+    auto deviceType = device->PointerDeviceType;
+	m_controller.OnPointerPressed(position, deviceType);
+    
+    if ( deviceType == PointerDeviceType::Mouse )
+    {
+        // Action, Jump, or Fire
+    }
+
+
+}
+
+
+
+void LlamaCraft::OnPointerMoved(
+                                         CoreWindow ^sender,
+                                         PointerEventArgs ^args)
+{
+    
+     DirectX::XMFLOAT2 position =  DirectX::XMFLOAT2( args->CurrentPoint->Position.X, args->CurrentPoint->Position.Y );
+    m_controller.OnPointerMoved(position);
+    }
+
+void LlamaCraft::OnPointerReleased(
+ CoreWindow ^sender,
+ PointerEventArgs ^args)
+{
    
-        
-	Windows::UI::Input::PointerPoint^ point = args->CurrentPoint; 
-	float f = point->RawPosition.X;
-	float g = point->RawPosition.Y;
-	int x = 0;
-        
+       DirectX::XMFLOAT2 position =    DirectX::XMFLOAT2( args->CurrentPoint->Position.X, args->CurrentPoint->Position.Y );
+	   m_controller.OnPointerReleased(position);
 
 }
 
-void LlamaCraft::OnPointerMoved(CoreWindow^ sender, PointerEventArgs^ args)
+void LlamaCraft::OnKeyDown(
+                                    CoreWindow^ sender,
+                                    KeyEventArgs^ args )
 {
-		Windows::UI::Input::PointerPoint^ point = args->CurrentPoint; 
-	float f = point->RawPosition.X;
-	float g = point->RawPosition.Y;
-	int x = 0;
+    Windows::System::VirtualKey Key;
+    Key = args->VirtualKey;
+	m_controller.OnKeyDown(Key);
+
+  
 }
+
+
+void LlamaCraft::OnKeyUp(
+                                  CoreWindow^ sender,
+                                  KeyEventArgs^ args)
+{
+    Windows::System::VirtualKey Key;
+    Key = args->VirtualKey;
+
+    m_controller.OnKeyDown(Key);
+}
+
 
 void LlamaCraft::OnActivated(CoreApplicationView^ applicationView, IActivatedEventArgs^ args)
 {

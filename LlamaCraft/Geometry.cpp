@@ -10,6 +10,7 @@ std::vector<Vertex> Geometry::GetVertices() {
 	return vs;
 }
 
+//This is still the wrong function.  I want fractals.
 float Geometry::GetHeight(float x, float z) {
 	return 0.05f*(z*sinf(0.1f*x) + x*cosf(0.1f*z));
 }

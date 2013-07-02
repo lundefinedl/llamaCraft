@@ -30,6 +30,8 @@
     <ClCompile Include="Direct3DBase.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="MoveLookController.cpp" />
+    <ClCompile Include="XMFloatMath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LlamaCraft.h" />
@@ -39,6 +41,8 @@
     <ClInclude Include="BasicTimer.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="MoveLookController.h" />
+    <ClInclude Include="XMFloatMath.h" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
