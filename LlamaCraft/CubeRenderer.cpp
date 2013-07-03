@@ -151,7 +151,7 @@ void CubeRenderer::Update(float timeTotal, float timeDelta)
 	(void) timeDelta; // Unused parameter.
 
 	XMVECTOR eye = XMVectorSet(position.x, position.y, position.z, 1.0f);
-	XMVECTOR at = XMVectorSet(0.0f, 0.0, 0.0f, 0.0f);
+	XMVECTOR at = XMVectorSet(1.0f, 0.0, 0.0f, 0.0f);
 	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
 	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixLookAtRH(eye, at, up)));
